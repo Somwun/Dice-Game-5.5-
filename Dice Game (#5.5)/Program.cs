@@ -21,10 +21,19 @@ namespace Dice_Game___5._5_
                     Console.WriteLine("Invalid Input");
                     bet = "0";
                 }
-                Console.WriteLine("Welcome to the definately not shady casino in the alley");
-                Console.WriteLine("Rules of the game are simple.\nI roll two dice and you bet on the outcome, whether you think they'll be doubles, singles, even, or odd");
-                Console.WriteLine("If you need help, just type Help\nAnd if you'd like to leave, just type Exit");
-                userInput = Console.ReadLine().ToLower().Trim();
+                if (money <= 0)
+                {
+                    Console.WriteLine("Oops, you have no money, get out");
+                    repeat = false;
+                    Console.ReadLine();
+                }
+                else
+                {
+                    Console.WriteLine("Welcome to the definately not shady casino in the alley");
+                    Console.WriteLine("Rules of the game are simple.\nI roll two dice and you bet on the outcome, whether you think they'll be doubles, singles, even, or odd");
+                    Console.WriteLine("If you need help, just type Help\nAnd if you'd like to leave, just type Exit");
+                    userInput = Console.ReadLine().ToLower().Trim();
+                }
                 if (userInput == "help")
                 {
                     Console.Clear();
@@ -33,101 +42,103 @@ namespace Dice_Game___5._5_
                 }
                 else if (userInput == "exit")
                     repeat = false;
-                else if (userInput == "double" || userInput == "doubles")
+                else if (userInput != "help" & userInput != "exit" & money > 0)
                 {
                     Console.Clear();
                     Console.WriteLine("How much do you want to bet on that?");
                     bet = Console.ReadLine().Trim();
-                    if (isNumber = bet.All(char.IsDigit))
+                    if (Convert.ToDouble(bet) > money)
+                        bet = Convert.ToString(money);
+                    else if (Convert.ToDouble(bet) < 0)
+                        bet = "0";
+                    if (userInput == "double" || userInput == "doubles")
                     {
                         Console.Clear();
-                        die1.RollDie();
-                        die2.RollDie();
-                        if (die1.CurrentRoll == die2.CurrentRoll)
+                        if (isNumber = bet.All(char.IsDigit))
                         {
-                            money += Convert.ToDouble(bet);
-                            Console.WriteLine($"Congrats you won, you now have {money.ToString("C")}\nPress enter to continue");
-                            Console.ReadLine();
+                            Console.Clear();
+                            die1.RollDie();
+                            die2.RollDie();
+                            if (die1.CurrentRoll == die2.CurrentRoll)
+                            {
+                                money += Convert.ToDouble(bet);
+                                Console.WriteLine($"Congrats you won, you now have {money.ToString("C")}\nPress enter to continue");
+                                Console.ReadLine();
+                            }
+                            else
+                            {
+                                money -= Convert.ToDouble(bet);
+                                Console.WriteLine($"Well we can't all be winners, you know have {money.ToString("C")} left\nPress enter to continue");
+                                Console.ReadLine();
+                            }
                         }
                         else
+                            Console.Clear();
+                    }
+                    else if (userInput == "single" || userInput == "singles")
+                    {
+                        Console.Clear();
+                        if (isNumber = bet.All(char.IsDigit))
                         {
-                            money -= Convert.ToDouble(bet);
-                            Console.WriteLine($"Well we can't all be winners, you know have {money.ToString("C")} left\nPress enter to continue");
-                            Console.ReadLine();
+                            Console.Clear();
+                            die1.RollDie();
+                            die2.RollDie();
+                            if (die1.CurrentRoll != die2.CurrentRoll)
+                            {
+                                money += Convert.ToDouble(bet);
+                                Console.WriteLine($"Congrats you won, you now have {money.ToString("C")}\nPress enter to continue");
+                                Console.ReadLine();
+                            }
+                            else
+                            {
+                                money -= Convert.ToDouble(bet);
+                                Console.WriteLine($"Well we can't all be winners, you know have {money.ToString("C")} left\nPress enter to continue");
+                                Console.ReadLine();
+                            }
                         }
                     }
-                    else
-                        Console.Clear();
-                }
-                else if (userInput == "single" || userInput == "singles")
-                {
-                    Console.Clear();
-                    Console.WriteLine("How much do you want to bet on that?");
-                    bet = Console.ReadLine().Trim();
-                    if (isNumber = bet.All(char.IsDigit))
+                    else if (userInput == "odd" || userInput == "odds")
                     {
                         Console.Clear();
-                        die1.RollDie();
-                        die2.RollDie();
-                        if (die1.CurrentRoll != die2.CurrentRoll)
+                        if (isNumber = bet.All(char.IsDigit))
                         {
-                            money += Convert.ToDouble(bet);
-                            Console.WriteLine($"Congrats you won, you now have {money.ToString("C")}\nPress enter to continue");
-                            Console.ReadLine();
-                        }
-                        else
-                        {
-                            money -= Convert.ToDouble(bet);
-                            Console.WriteLine($"Well we can't all be winners, you know have {money.ToString("C")} left\nPress enter to continue");
-                            Console.ReadLine();
+                            Console.Clear();
+                            die1.RollDie();
+                            die2.RollDie();
+                            if ((die1.CurrentRoll + die2.CurrentRoll / 2) % 1 == 0)
+                            {
+                                money += Convert.ToDouble(bet);
+                                Console.WriteLine($"Congrats you won, you now have {money.ToString("C")}\nPress enter to continue");
+                                Console.ReadLine();
+                            }
+                            else
+                            {
+                                money -= Convert.ToDouble(bet);
+                                Console.WriteLine($"Well we can't all be winners, you know have {money.ToString("C")} left\nPress enter to continue");
+                                Console.ReadLine();
+                            }
                         }
                     }
-                }
-                else if (userInput == "odd" || userInput == "odds")
-                {
-                    Console.Clear();
-                    Console.WriteLine("How much do you want to bet on that?");
-                    bet = Console.ReadLine().Trim();
-                    if (isNumber = bet.All(char.IsDigit))
+                    else if (userInput == "even" || userInput == "evens")
                     {
                         Console.Clear();
-                        die1.RollDie();
-                        die2.RollDie();
-                        if ((die1.CurrentRoll + die2.CurrentRoll / 2) % 1 == 0)
+                        if (isNumber = bet.All(char.IsDigit))
                         {
-                            money += Convert.ToDouble(bet);
-                            Console.WriteLine($"Congrats you won, you now have {money.ToString("C")}\nPress enter to continue");
-                            Console.ReadLine();
-                        }
-                        else
-                        {
-                            money -= Convert.ToDouble(bet);
-                            Console.WriteLine($"Well we can't all be winners, you know have {money.ToString("C")} left\nPress enter to continue");
-                            Console.ReadLine();
-                        }
-                    }
-                }
-                else if (userInput == "even" || userInput == "evens")
-                {
-                    Console.Clear();
-                    Console.WriteLine("How much do you want to bet on that?");
-                    bet = Console.ReadLine().Trim();
-                    if (isNumber = bet.All(char.IsDigit))
-                    {
-                        Console.Clear();
-                        die1.RollDie();
-                        die2.RollDie();
-                        if ((die1.CurrentRoll + die2.CurrentRoll / 2) % 1 != 0)
-                        {
-                            money += Convert.ToDouble(bet);
-                            Console.WriteLine($"Congrats you won, you now have {money.ToString("C")}\nPress enter to continue");
-                            Console.ReadLine();
-                        }
-                        else
-                        {
-                            money -= Convert.ToDouble(bet);
-                            Console.WriteLine($"Well we can't all be winners, you know have {money.ToString("C")} left\nPress enter to continue");
-                            Console.ReadLine();
+                            Console.Clear();
+                            die1.RollDie();
+                            die2.RollDie();
+                            if ((die1.CurrentRoll + die2.CurrentRoll / 2) % 1 != 0)
+                            {
+                                money += Convert.ToDouble(bet);
+                                Console.WriteLine($"Congrats you won, you now have {money.ToString("C")}\nPress enter to continue");
+                                Console.ReadLine();
+                            }
+                            else
+                            {
+                                money -= Convert.ToDouble(bet);
+                                Console.WriteLine($"Well we can't all be winners, you know have {money.ToString("C")} left\nPress enter to continue");
+                                Console.ReadLine();
+                            }
                         }
                     }
                 }
